@@ -125,6 +125,7 @@ def build_plot(triangle, reflected_triangle, line):
     #
     plt.axhline(linewidth=2, color='black')
     plt.axvline(linewidth=2, color='black')
+    plt.axis('equal')
     #
     plt.grid()
     plt.show()
