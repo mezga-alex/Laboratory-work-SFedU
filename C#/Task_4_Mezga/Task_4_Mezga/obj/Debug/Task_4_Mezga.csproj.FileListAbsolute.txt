@@ -1,0 +1,6 @@
+\\Mac\Home\Desktop\Laboratory-work-SFedU\C#\Task_4_Mezga\Task_4_Mezga\bin\Debug\Task_4_Mezga.exe.config
+\\Mac\Home\Desktop\Laboratory-work-SFedU\C#\Task_4_Mezga\Task_4_Mezga\bin\Debug\Task_4_Mezga.exe
+\\Mac\Home\Desktop\Laboratory-work-SFedU\C#\Task_4_Mezga\Task_4_Mezga\bin\Debug\Task_4_Mezga.pdb
+\\Mac\Home\Desktop\Laboratory-work-SFedU\C#\Task_4_Mezga\Task_4_Mezga\obj\Debug\Task_4_Mezga.csprojAssemblyReference.cache
+\\Mac\Home\Desktop\Laboratory-work-SFedU\C#\Task_4_Mezga\Task_4_Mezga\obj\Debug\Task_4_Mezga.exe
+\\Mac\Home\Desktop\Laboratory-work-SFedU\C#\Task_4_Mezga\Task_4_Mezga\obj\Debug\Task_4_Mezga.pdb
