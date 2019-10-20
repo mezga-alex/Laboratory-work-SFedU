@@ -46,10 +46,24 @@ namespace bit_array
             int bit_pos = pos % 8;
 
             bit_pos = 7 - bit_pos;
+
+            bool is_complement = false;
+            if (val == 0)
+            {
+                is_complement = true;
+
+                val = 1;
+                this.arr[byte_pos] = (byte)~this.arr[byte_pos];
+            }
+
             val <<= bit_pos;
-            //Console.WriteLine($"Shifted byte: {Convert.ToString(val, toBase: 2)}");
+            
             this.arr[byte_pos] |= val;
             
+            if (is_complement)
+            {
+                this.arr[byte_pos] = (byte)~this.arr[byte_pos];
+            }
             Console.WriteLine($"This is {byte_pos} byte with {bit_pos} bit pos(0..7, start from right)");
             Console.WriteLine($"Mask: {Convert.ToString(val, toBase: 2)}");
             Console.WriteLine($"Shifted byte: {Convert.ToString(this.arr[byte_pos], toBase: 2)}");

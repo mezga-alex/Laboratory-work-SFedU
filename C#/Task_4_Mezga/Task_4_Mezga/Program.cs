@@ -22,6 +22,9 @@ namespace bit_array
             bit_array.set_bit(1, 9);
             bit_array.set_bit(1, 12);
             bit_array.set_bit(1, 16);
+            bit_array.set_bit(0, 16);
+            bit_array.set_bit(0, 12);
+
             Console.ReadLine();
         }
     }
