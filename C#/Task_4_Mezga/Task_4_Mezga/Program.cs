@@ -12,19 +12,22 @@ namespace bit_array
         static void Main(string[] args)
         {
             BitArraySimple bit_array = new BitArraySimple(19);
-            //bit_array.set_byte(, 1);
-            //Console.WriteLine(bit_array.get_byte(0));
 
-            //bool f = 0;
-            bit_array.set_bit(1, 1);
-            bit_array.set_bit(1, 5);
-            bit_array.set_bit(1, 8);
-            bit_array.set_bit(1, 9);
-            bit_array.set_bit(1, 12);
-            bit_array.set_bit(1, 16);
-            bit_array.set_bit(0, 16);
-            bit_array.set_bit(0, 12);
+            bit_array[1] = 1;
+            bit_array[4] = 1;
+            bit_array[17] = 1;
+            bit_array[9] = 1;
+            bit_array[24] = 1;
+            bit_array[16] = 1;
+            bit_array.Print();
 
+            bit_array[1] = 0;
+            bit_array[9] = 0;
+            bit_array.Print();
+
+            BitArrayDict bit_dict = new BitArrayDict();
+
+            //Console.WriteLine(bit_array[9]);
             Console.ReadLine();
         }
     }
