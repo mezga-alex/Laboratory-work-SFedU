@@ -3,10 +3,13 @@ import matplotlib.pyplot as plt
 
 
 # Plotting
-def build_plot(polygon):
+def build_plot(polygon, x, y):
     # Polygon
     p = plt.Polygon(polygon, color='red')
     plt.gca().add_patch(p)
+
+    # Dot
+    plt.plot([x], [y], 'bo')
 
     # Axes processing
     plt.axis('equal')
@@ -52,6 +55,18 @@ def is_convex_polygon(polygon):
         return False
     else:
         return True
+
+
+# task 2
+def dot_in_polygon(x, y, polygon):
+    c = 0
+    for i in range(len(polygon)):
+        # print(poly[i][1], poly[i - 1][1])
+        if (((polygon[i][1] <= y <= polygon[i - 1][1]) or (polygon[i - 1][1] <= y <= polygon[i][1])) and
+                (x >= (polygon[i - 1][0] - polygon[i][0]) *
+                 (y - polygon[i][1]) / (polygon[i - 1][1] - polygon[i][1]) + polygon[i][0])):
+            c = 1 - c
+    return c
 
 
 # The polygon area calculating
