@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="47px" height="910px" viewBox="0 0 47 910" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Timeline horizontal</title>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Resume-Eng" transform="translate(-1718.000000, -1710.000000)">
+            <g id="Group" transform="translate(140.000000, 112.000000)">
+                <g id="extra-courses" transform="translate(1140.000000, 1501.000000)">
+                    <g id="Timeline-horizontal" transform="translate(461.500000, 554.500000) rotate(90.000000) translate(-461.500000, -554.500000) translate(9.500000, 536.500000)">
+                        <rect id="timeline" fill="#A6B0D8" opacity="0.5" x="1" y="14" width="903" height="9" rx="4.5"></rect>
+                        <circle id="Oval-Copy-2" stroke="#FFFFFF" stroke-width="9.7254902" fill="#4A90E2" cx="17.5" cy="18.5" r="17.5"></circle>
+                        <circle id="Oval-Copy-3" stroke="#FFFFFF" stroke-width="9.7254902" fill="#4A90E2" cx="353" cy="18" r="17.5"></circle>
+                        <circle id="Oval-Copy-3" stroke="#FFFFFF" stroke-width="9.7254902" fill="#4A90E2" cx="700" cy="18" r="17.5"></circle>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

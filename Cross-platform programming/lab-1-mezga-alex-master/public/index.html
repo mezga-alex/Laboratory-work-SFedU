@@ -1,0 +1,285 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+
+    <title>My awesome resume</title>
+    <meta name="description" content="My awesome resume">
+    <meta name="author" content="Johny Catswill">
+
+    <link rel="stylesheet" href="css/styles.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+    <script>
+        (function () {
+            document.addEventListener('DOMContentLoaded', function () {
+                const button = window.document.querySelector('.actions__download-btn');
+                button.onclick = function () {
+                    const opt = {
+                        filename: 'resume.pdf',
+                        image: {type: 'jpeg', quality: 1},
+                        jsPDF: {unit: 'in', format: 'a4', orientation: 'portrait'}
+                    };
+                    const source = window.document.querySelector('.resume-page');
+                    html2pdf().set(opt).from(source).save();
+                };
+            }, false);
+        })();
+    </script>
+
+</head>
+
+<body>
+<header class="header">
+    <div class="header__content">
+        <div class="logo">
+            <a href="/" class="logo__text">CV Super Builder</a>
+        </div>
+        <div class="actions">
+            <button class="actions__download-btn">Download PDF</button>
+        </div>
+    </div>
+</header>
+<main class="resume-container">
+    <div class="resume-page">
+        <div class="resume-page__content">
+            <div class="resume=header">
+                <img src="/images/profile_photo.jpg" id="profile-photo">
+
+                <div class="full-name">
+                    <span class="span-text first-name">Alexander</span>
+                    <span class="span-text last-name">Mezga</span>
+                </div>
+
+                <div class="specialization">
+                    <span class="span-text specialization-span">Data Scientist</span>
+                </div>
+
+                <div class="description">
+                    <span class="span-text description ">Data analysis and machine learning models development</span>
+                </div>
+            </div>
+
+            <div class="text-content grid2x2">
+                <!--     1 TEXT BLOCK-->
+                <div class="text-content-section education">
+                    <span class="span-text span-text-head section-header new-line-span">Education</span>
+                    <span class="span-text new-line-span" id="university">Southern Federal University</span>
+                    <span id="institute"
+                          сlass="new-line-span">Institute of Mathematics, Mechanics, and Computer Science</span>
+                    <img src="images/timeline-horizontal.svg" class="new-line-span" id="education-timeline">
+
+                    <div class="flex-container">
+                        <span class="flex-child flex-row education-part span-subtitle-text">Bachelor’s Degree
+                          Applied Mathematics and Computer Science</span>
+                        <span class="flex-child flex-row education-part span-subtitle-text">Master’s Degree
+                        Mobile Application and Computer Games Development</span>
+                    </div>
+                    <div class="flex-container">
+                        <span class="flex-child education-part additional-inform">2016 - 2020</span>
+                        <span class="flex-child education-part additional-inform">2020 - 2022</span>
+                    </div>
+                </div>
+
+                <!--     2 TEXT BLOCK-->
+                <div class="text-content-section education">
+                    <span class="span-text span-text-head section-header new-line-span">Achievements</span>
+                    <!--          <img src="images/achivements_timeline.svg" class="new-line-span timeline-vertical">-->
+                    <div class="flex-container flex-column">
+                        <div>
+                            <div class="flex-container">
+                                <div class="left-title">
+                                    <span class="flex-child flex-row education-part span-subtitle-text">47 Hours Hackathon</span>
+                                    <span class="additional-inform new-line-span">2019</span>
+                                </div>
+                                <!--                                <div class="left-title">-->
+                                <!--                                    <img src="images/timeline_vertical.svg" class="new-line-span" id="vertical">-->
+                                <!--                                </div>-->
+                                <div class="right-description">
+                                    <span class="flex-child education-part span-text">As part of a team developing an NLP solution:</span>
+                                    <ul class="education-part span-text ul-resume">
+                                        <li class="li-resume">- Winner of the Center-Invest Bank nomination</li>
+                                        <li class="li-resume">- 3rd place overall</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="flex-container">
+                                <div class="left-title">
+                                    <span class="flex-child flex-row education-part span-subtitle-text">SfeduNet, Sfedu Business Station</span>
+                                    <span class="additional-inform new-line-span">2020</span>
+                                </div>
+                                <div class="right-description">
+                                    <span class="flex-child education-part span-text">Leader of the team solving Skyeng's NLP case:</span>
+                                    <ul class="education-part span-text ul-resume">
+                                        <li class="li-resume">- Best MVP Award</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--     3 TEXT BLOCK-->
+                <div class="text-content-section education flex-start">
+                    <span class="span-text span-text-head section-header new-line-span">Extra courses</span>
+
+                    <div class="flex-container">
+                        <div class="left-title">
+                            <span class="flex-child education-part span-subtitle-text">CVisionLab Course</span>
+                            <span class="additional-inform new-line-span">2018</span>
+                        </div>
+                        <div class="right-description">
+                            <span class="flex-child education-part span-text">A full-time course in the CVisionLab
+                                company in the field of machine learning, mainly computer vision.</span>
+                        </div>
+                    </div>
+
+                    <div class="flex-container">
+                        <div class="left-title">
+                            <span class="flex-child flex-row education-part span-subtitle-text">Deep Learning School</span>
+                            <span class="flex-child flex-row education-part span-subtitle-text new-line-span">I part, MIPT</span>
+
+                            <span class="additional-inform new-line-span">2020</span>
+                        </div>
+                        <div class="right-description">
+                                    <span class="flex-child education-part span-text">The course supported by PSAMI MIPT
+                                        and Lab of Innovation (MIPT), the purpose of which is to acquaint students
+                                        with the principles of deep learning (neural networks).</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!--     4 TEXT BLOCK-->
+                <div class="text-content-section education">
+                    <span class="span-text span-text-head section-header new-line-span">Achievements</span>
+                    <!--          <img src="images/achivements_timeline.svg" class="new-line-span timeline-vertical">-->
+                    <div class="flex-container flex-column">
+                        <div>
+                            <div class="flex-container">
+                                <div class="left-title">
+                                    <span class="flex-child flex-row education-part span-subtitle-text">Interactive Task Book</span>
+                                    <span class="additional-inform new-line-span">NLP</span>
+                                    <span class="instruments-inform new-line-span">Python, Cython, spaCy, Flask, MongoDB,  JavaScript, Bootstrap</span>
+                                </div>
+                                <!--                                <div class="left-title">-->
+                                <!--                                    <img src="images/timeline_vertical.svg" class="new-line-span" id="vertical">-->
+                                <!--                                </div>-->
+                                <div class="right-description">
+                                    <span class="flex-child education-part span-text">Building a system for automatically
+                                        creating English grammar exercises from any text on a web page.</span>
+                                </div>
+                            </div>
+                            <div class="flex-container">
+                                <div class="left-title">
+                                    <span class="flex-child flex-row education-part span-subtitle-text">Carvana Image Masking</span>
+                                    <span class="additional-inform new-line-span">Computer Vision</span>
+                                    <span class="instruments-inform new-line-span">Python, NumPy, Pytorch, Matplotlib</span>
+
+                                </div>
+                                <div class="right-description">
+                                    <span class="flex-child education-part span-text">Developing an algorithm that automatically
+                                        removes the photo studio background. Competition was launched by Carvana.</span>
+                                </div>
+                            </div>
+                            <div class="flex-container">
+                                <div class="left-title">
+                                    <span class="flex-child flex-row education-part span-subtitle-text">Spot Nuclei Detection</span>
+                                    <span class="additional-inform new-line-span">Computer Vision</span>
+                                    <span class="instruments-inform new-line-span">Python, NumPy, Pytorch, Matplotlib</span>
+
+                                </div>
+                                <div class="right-description">
+                                    <span class="flex-child education-part span-text">Building a computer model that can
+                                        identify a range of spot nucleus across varied conditions.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--     5 TEXT BLOCK-->
+                <div class="text-content-section education">
+                    <span class="span-text span-text-head section-header new-line-span">Skills</span>
+                    <!--          <img src="images/achivements_timeline.svg" class="new-line-span timeline-vertical">-->
+                    <div class="flex-container flex-column">
+                        <div>
+                            <div class="skill-row">
+                                <span class="flex-child flex-row education-part span-subtitle-text">Programming languages</span>
+                                <span class="additional-inform new-line-span">Python, C++, JavaScript, Swift, MATLAB</span>
+                            </div>
+                            <div class="skill-row">
+                                <span class="flex-child flex-row education-part span-subtitle-text">Data Visualization</span>
+                                <span class="additional-inform new-line-span">Matplotlib, Seaborn, Chart.js</span>
+                            </div>
+                            <div class="skill-row">
+                                <span class="flex-child flex-row education-part span-subtitle-text">Data manipulation</span>
+                                <span class="additional-inform new-line-span">SQL, Pandas</span>
+                            </div>
+                            <div class="skill-row">
+                                <span class="flex-child flex-row education-part span-subtitle-text">Frameworks & libraries</span>
+                                <span class="additional-inform new-line-span">PyTorch, NumPy, spaCy, Scikit-Learn, Flask</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--     6 TEXT BLOCK-->
+                <div class="text-content-section education">
+                    <span class="span-text span-text-head section-header new-line-span">Bio</span>
+                    <!--          BIO -->
+                    <div class="flex-container flex-column">
+                        <div>
+                            <div>
+                                <img src="images/birthday.svg" alt="birthday" class="bio-icon">
+                                <span class="additional-inform bio-inform">06.10.1998</span>
+
+                                <img src="images/location.svg" alt="location" class="bio-icon">
+                                <span class="additional-inform">Rostov-on-Don, Russia</span>
+                            </div>
+                            <div>
+                                <img src="images/language.svg" alt="language" class="bio-icon">
+                                <span class="additional-inform">English (intermediate), Russian, Ukrainian</span>
+                            </div>
+
+                            <div>
+                                <img src="images/passport.svg" alt="language" class="bio-icon">
+                                <span class="additional-inform">Сitizenship: Ukraine</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--          Contacts -->
+                    <span class="span-text span-text-head section-header new-line-span" style="margin: 20px 0 0 0">Contacts</span>
+                    <!--          <img src="images/achivements_timeline.svg" class="new-line-span timeline-vertical">-->
+                    <div class="flex-container flex-column">
+                        <div class="contacts-block">
+                            <div class="flex-container">
+                                <div class="contacts-struct-left">
+                                    <img src="images/gmail.svg" alt="gmail" class="bio-icon">
+                                    <span class="additional-inform bio-inform">mezga.studio@gmail.com</span>
+                                </div>
+                                <div class="contacts-struct-right">
+                                    <img src="images/github.svg" alt="github" class="bio-icon">
+                                    <span class="additional-inform">mezga-alex</span>
+                                </div>
+                            </div>
+                            <div class="flex-container">
+                                <div class="contacts-struct-left">
+                                    <img src="images/mobile.svg" alt="mobile phone" class="bio-icon">
+                                    <span class="additional-inform bio-inform">+7 988 947 77 03</span>
+                                </div>
+                                <div class="contacts-struct-right">
+                                    <img src="images/telegram.svg" alt="telegram" class="bio-icon">
+                                    <span class="additional-inform">amezga</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>
