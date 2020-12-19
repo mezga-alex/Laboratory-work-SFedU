@@ -1,126 +1,13 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, Button, Image, Platform  } from 'react-native';
-import * as ImagePicker from 'expo-image-picker';
+import { StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { FullView ,MyTabs, MyComponent } from './screens.js'
 
-
-function Home() {
-  const [image, setImage] = useState(null);
-
-  useEffect(() => {
-    (async () => {
-      if (Platform.OS !== 'web') {
-        const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-        if (status !== 'granted') {
-          alert('Sorry, we need camera roll permissions to make this work!');
-        }
-      }
-    })();
-  }, []);
-
-  const pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
-
-    console.log(result);
-
-    if (!result.cancelled) {
-      setImage(result.uri);
-    }
-  };
-
-  return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Button title="Pick an image from camera roll" onPress={pickImage} />
-        {image && <Image source={{ uri: image }} style={{ width: 400, height: 400 }} />}
-      </View>
-  );
-}
-
-function History() {
-    const [image, setImage] = useState(null);
-
-    useEffect(() => {
-        (async () => {
-            if (Platform.OS !== 'web') {
-                const { status } = await ImagePicker.requestCameraPermissionsAsync();
-                if (status !== 'granted') {
-                    alert('Sorry, we need camera roll permissions to make this work!');
-                }
-            }
-        })();
-    }, []);
-
-    const pickImage = async () => {
-        let result = await ImagePicker.launchCameraAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.All,
-            allowsEditing: true,
-            aspect: [4, 3],
-            quality: 1,
-        });
-
-        console.log(result);
-
-        if (!result.cancelled) {
-            setImage(result.uri);
-        }
-    };
-
-    return (
-        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-            <Button title="Pick an image from camera roll" onPress={pickImage} />
-            {image && <Image source={{ uri: image }} style={{ width: 400, height: 400 }} />}
-        </View>
-    );
-}
-
-
-const Tab = createBottomTabNavigator();
-
-function MyTabs() {
-  return (
-      <Tab.Navigator
-          initialRouteName="Home"
-          tabBarOptions={{
-            activeTintColor: '#e91e63',
-          }}
-      >
-        <Tab.Screen
-            name="Home"
-            component={Home}
-            options={{
-              tabBarLabel: 'Home',
-              tabBarIcon: ({ color, size }) => (
-                  <MaterialCommunityIcons name="home" color={color} size={size} />
-              ),
-            }}
-        />
-        <Tab.Screen
-            name="History"
-            component={History}
-            options={{
-              tabBarLabel: 'History',
-              tabBarIcon: ({ color, size }) => (
-                  <MaterialCommunityIcons name="history" color={color} size={size} />
-              ),
-            }}
-        />
-      </Tab.Navigator>
-  );
-}
 
 export default function App() {
   return (
-      <NavigationContainer>
-        <MyTabs />
-      </NavigationContainer>
+      <FullView/>
   );
 }
 
@@ -132,3 +19,49 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
+
+
+// import React, { useState } from "react";
+// import { ActionSheetIOS, Button, StyleSheet, Text, View } from "react-native";
+//
+// const App = () => {
+//     const [result, setResult] = useState("🔮");
+//
+//     const onPress = () =>
+//         ActionSheetIOS.showActionSheetWithOptions(
+//             {
+//                 options: ["Cancel", "Generate nusmber", "Reset"],
+//                 destructiveButtonIndex: 2,
+//                 cancelButtonIndex: 0
+//             },
+//             buttonIndex => {
+//                 if (buttonIndex === 0) {
+//                     // cancel action
+//                 } else if (buttonIndex === 1) {
+//                     setResult(Math.floor(Math.random() * 100) + 1);
+//                 } else if (buttonIndex === 2) {
+//                     setResult("🔮");
+//                 }
+//             }
+//         );
+//
+//     return (
+//         <View style={styles.container}>
+//             <Text style={styles.result}>{result}</Text>
+//             <Button onPress={onPress} title="Show Action Sheet" />
+//         </View>
+//     );
+// };
+//
+// const styles = StyleSheet.create({
+//     container: {
+//         flex: 1,
+//         justifyContent: "center"
+//     },
+//     result: {
+//         fontSize: 64,
+//         textAlign: "center"
+//     }
+// });
+//
+// export default App;
