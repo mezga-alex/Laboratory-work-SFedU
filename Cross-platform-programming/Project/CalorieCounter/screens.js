@@ -1,15 +1,15 @@
 import React from 'react';
-import {ActionSheetIOS, Button, Image, StyleSheet, Text, View} from 'react-native';
+import {ActionSheetIOS, StatusBar, Button, Image, StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
-import { NavigationContainer } from '@react-navigation/native';
+import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import { createStackNavigator } from '@react-navigation/stack';
+import {createStackNavigator} from '@react-navigation/stack';
 
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 import {Alert} from "react-native-web";
 import * as ImageManipulator from 'expo-image-manipulator';
-import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-
+import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context';
+import uploadImage from './assets/upload-image.png';
 
 class Home extends React.Component {
     constructor(props) {
@@ -142,10 +142,27 @@ class Home extends React.Component {
     render() {
         return (
             <SafeAreaView
-                style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+                style={styles.safeAreaContainer}
             >
-                <Button onPress={this.onPress} title="Shows Action Sheet"/>
-                {this.state.imageURI && <Image source={{uri: this.state.imageURI}} style={{width: 400, height: 400}}/>}
+                <StatusBar barStyle="dark-content" backgroundColor="#ecf0f1" />
+                <View style={styles.imagePlaceContainer}>
+                    <View style={[
+                        styles.imagePlace,
+                        !this.state.imageURI && styles.imagePlaceEmpty
+                    ]}>
+                        {!this.state.imageURI && <Image source={ uploadImage } style={styles.imagePlaceholder} resizeMode='contain'/>}
+                        {this.state.imageURI && <Image source={{uri: this.state.imageURI}} style={styles.imageUploaded} resizeMode='cover'/>}
+                    </View>
+                </View>
+                <TouchableOpacity
+                    style={styles.button}
+                    onPress={this.onPress}
+                >
+                    <Text>Select photo</Text>
+                </TouchableOpacity>
+
+                {/*<Button onPress={this.onPress} title="Select photo"/>*/}
+
                 {this.state.imageURI && <Button onPress={this.sendRequest} title="Send image"/>}
             </SafeAreaView>
         );
@@ -167,8 +184,9 @@ class History extends React.Component {
     render() {
         return (
             <SafeAreaView
-                style={{ flex: 1, justifyContent: 'space-between', alignItems: 'center' }}
+                style={styles.safeAreaContainer}
             >
+                <Image source={uploadImage} style={{width: 50, height: 50}}/>
                 <Text>There will be a list</Text>
             </SafeAreaView>
         );
@@ -184,13 +202,14 @@ export class FullView extends React.Component {
         return (
             <SafeAreaProvider>
                 <NavigationContainer>
-                    <Stack.Navigator initialRouteName="Home" >
+                    <StatusBar barStyle="light-content" backgroundColor="#6a51ae" />
+                    <Stack.Navigator initialRouteName="Home">
                         <Stack.Screen name="Calorie Counter">
                             {() => (
                                 <Tab.Navigator
                                     initialRouteName="Home"
                                     tabBarOptions={{
-                                        activeTintColor: '#e91e63'
+                                        activeTintColor: '#6C63FF'
                                     }}
                                 >
                                     <Tab.Screen
@@ -226,12 +245,42 @@ export class FullView extends React.Component {
 }
 
 const styles = StyleSheet.create({
-    container: {
+    safeAreaContainer: {
+        display: 'flex',
         flex: 1,
-        justifyContent: "space-between",
-        backgroundColor: "#fff",
-        // padding: 20,
-        // margin: 10,
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+        backgroundColor: 'white'
+
+    },
+    imagePlaceContainer: {
+        display: 'flex',
+        flexDirection: 'row',
+    },
+    imagePlace: {
+        backgroundColor: '#f1f1f1',
+        flex: 0.9,
+        aspectRatio: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 20,
+
+    },
+    imagePlaceEmpty: {
+        borderColor: '#8d8d8d',
+        borderWidth: 4,
+        borderStyle: 'dashed',
+    },
+    imagePlaceholder: {
+        width: '80%',
+    },
+    imageUploaded: {
+        width:"100%",
+        height: "100%",
+        borderRadius: 20,
+        borderWidth: 4,
+        borderColor: '#6C63FF',
     },
     top: {
         flex: 0.3,
@@ -245,11 +294,9 @@ const styles = StyleSheet.create({
         backgroundColor: "beige",
         borderWidth: 5,
     },
-    bottom: {
-        flex: 0.3,
-        backgroundColor: "pink",
-        borderWidth: 5,
-        borderBottomLeftRadius: 20,
-        borderBottomRightRadius: 20,
+    button: {
+        alignItems: "center",
+        backgroundColor: "#DDDDDD",
+        padding: 10
     },
 });
