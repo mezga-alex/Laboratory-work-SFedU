@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useRef} from 'react';
 import {
     ActionSheetIOS,
     StatusBar,
@@ -8,7 +8,10 @@ import {
     Text,
     View,
     TouchableOpacity,
-    AsyncStorage
+    AsyncStorage,
+    ActivityIndicator,
+    ScrollView,
+    Dimensions
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import {NavigationContainer} from '@react-navigation/native';
@@ -16,11 +19,24 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createStackNavigator} from '@react-navigation/stack';
 
 import {MaterialCommunityIcons} from '@expo/vector-icons';
-import {Alert} from "react-native-web";
 import * as ImageManipulator from 'expo-image-manipulator';
-import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context';
+import {SafeAreaProvider, SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
+import {Grid, YAxis} from 'react-native-svg-charts';
+import {
+    LineChart,
+    BarChart,
+    PieChart,
+    ProgressChart,
+    ContributionGraph,
+    StackedBarChart
+} from "react-native-chart-kit";
 import uploadImage from './assets/upload-image.png';
+import {FlatList} from "react-native-web";
+// import {NativeStack} from "./App";
+import {createNativeStackNavigator} from "react-native-screens/native-stack";
+import {enableScreens} from "react-native-screens";
 
+enableScreens();
 // Function to save data in AsyncStorage
 const _storeData = async (key, value) => {
     try {
@@ -60,6 +76,75 @@ const _removeItemValue = async (key) => {
     }
 }
 
+class MyBarChart extends React.Component {
+    constructor(props) {
+        super(props);
+
+        let foodType = [];
+        let foodValue = []
+        for (let food in this.props.dataObject) {
+            foodType.push(food);
+            foodValue.push(this.props.dataObject[food])
+        }
+        let maxValueID = foodValue.indexOf(Math.max(...foodValue));
+        this.state = {
+            foodType: foodType,
+            foodValue: foodValue,
+            maxValueID: maxValueID
+        }
+    }
+
+    render() {
+        console.log("KEYMAP");
+        console.log(this.state.foodType);
+        console.log(this.state.foodValue);
+        console.log("///////////////////////");
+
+        return (
+            <View>
+                <Text style={styles.barChartHeader}>{this.state.foodType[this.state.maxValueID]}</Text>
+                <LineChart
+                    data={{
+                        labels: this.state.foodType,
+                        datasets: [
+                            {
+                                data: this.state.foodValue
+                            }
+                        ]
+                    }}
+                    width={Dimensions.get("window").width} // from react-native
+                    verticalLabelRotation={45}
+                    height={320}
+                    fromZero={true}
+                    yAxisSuffix="%"
+                    yAxisInterval={25} // optional, defaults to 1
+                    chartConfig={{
+                        backgroundColor: "#6C63FF",
+                        backgroundGradientFrom: "#6C63FF",
+                        backgroundGradientTo: "#6f67e0",
+                        decimalPlaces: 0, // optional, defaults to 2dp
+                        color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+                        labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+                        style: {
+                            borderRadius: 0
+                        },
+                        propsForDots: {
+                            r: "6",
+                            strokeWidth: "2",
+                            stroke: "#ffffff"
+                        }
+                    }}
+                    bezier
+                    style={{
+                        marginVertical: 10,
+                        borderRadius: 0
+                    }}
+                />
+            </View>
+        );
+    }
+}
+
 class Home extends React.Component {
     constructor(props) {
         super(props);
@@ -68,7 +153,10 @@ class Home extends React.Component {
             cameraIsVisible: false,
             cameraPermission: false,
             galleryPermission: false,
-            archiveData: null
+            archiveData: null,
+            currentFoodData: null,
+            renderBarChart: false,
+            renderBar: false
         }
 
         _retrieveData('archiveData')
@@ -147,7 +235,8 @@ class Home extends React.Component {
     }
 
     uploadImage = () => {
-        alert('showActionSheetWithOptions');
+        // alert('showActionSheetWithOptions');
+        this.setState({renderBarChart: false});
         ActionSheetIOS.showActionSheetWithOptions(
             {
                 options: ["Cancel", "Take photo", "Choose from gallery"],
@@ -178,7 +267,7 @@ class Home extends React.Component {
 
                 if (resizedImageURI) {
                     let start = (new Date()).getTime();
-                    let url = "https://dfd00a2ac464.ngrok.io/analyse"
+                    let url = "https://057b5aecc333.ngrok.io/analyse"
                     let uploadData = new FormData();
                     uploadData.append('submit', 'ok');
                     uploadData.append('file', {
@@ -186,12 +275,14 @@ class Home extends React.Component {
                         type: 'image/jpeg',
                         name: 'photo.jpg',
                     })
+                    this.setState({waitingForResponse: true, renderBarChart: false});
                     fetch(url, {
                         method: 'post',
                         body: uploadData
                     }).then(response => response.json())
                         .catch((error) => {
                             alert("ERROR " + error);
+                            this.setState({waitingForResponse: false});
                         })
                         .then(response => {
                             if (response) {
@@ -199,6 +290,7 @@ class Home extends React.Component {
                                 console.log("NEW RESPONSE");
                                 console.log('Response Image New: ' + (((new Date()).getTime() - start) / 1000).toString());
                                 console.log(response);
+                                this.setState({currentFoodData: response});
 
                                 // Get current archive
                                 let curArchiveData = this.state.archiveData;
@@ -214,10 +306,12 @@ class Home extends React.Component {
                                     this.setState({'archiveData': curArchiveData});
                                 }
                             }
+                            this.setState({waitingForResponse: false, renderBarChart: true});
                         })
                 }
             }).catch((error) => {
                     console.log("Error: " + error);
+                    alert(error);
                 }
             );
 
@@ -232,6 +326,7 @@ class Home extends React.Component {
                 console.log('ERROR while remove');
             }
         })
+        this.setState({archiveData: null});
     }
 
     printArchive = () => {
@@ -253,62 +348,167 @@ class Home extends React.Component {
 
     render() {
         return (
-            <SafeAreaView
+            <View
                 style={styles.safeAreaContainer}
             >
                 <StatusBar barStyle="dark-content" backgroundColor="#ecf0f1"/>
-                <View style={styles.imagePlaceContainer}>
-                    <View style={styles.imagePlace}>
-                        {!this.state.imageURI &&
-                        <Image source={uploadImage} style={styles.imagePlaceholder} resizeMode='contain'/>}
-                        {this.state.imageURI &&
-                        <Image source={{uri: this.state.imageURI}} style={styles.imageUploaded} resizeMode='cover'/>}
+                <ScrollView style={{width: '100%'}}>
+                    <View style={styles.scrollContainer}>
+
+                        {/*<StatusBar barStyle="dark-content" backgroundColor="#ecf0f1"/>*/}
+
+                        <View style={styles.imagePlaceContainer}>
+                            <TouchableOpacity style={styles.imagePlace}
+                                              onPress={this.uploadImage}>
+                                {!this.state.imageURI &&
+                                    <Image source={uploadImage} style={styles.imagePlaceholder} resizeMode='contain'/>
+                                }
+                                {!this.state.imageURI && <Text style={styles.placeholderText}>Tap to upload an image</Text>}
+
+                                {this.state.imageURI &&
+                                <Image source={{uri: this.state.imageURI}} style={styles.imageUploaded}
+                                       resizeMode='cover'/>}
+
+                            </TouchableOpacity>
+                        </View>
+                        {this.state.renderBarChart &&
+                        // <MyBarChart dataObject={this.state.currentFoodData.result}/>
+                            <MyBarChart dataObject={this.state.currentFoodData.result}/>
+                        }
+                        <View style={styles.imagePlaceContainer}>
+                            {this.state.imageURI &&
+                            <TouchableOpacity
+                                style={styles.buttonUpload}
+                                onPress={this.sendRequest}
+                            >
+                                {!this.state.waitingForResponse && <Text style={styles.textButton}>Process photo</Text>}
+                                {this.state.waitingForResponse && <ActivityIndicator size="small" color="#0000ff"/>}
+                            </TouchableOpacity>}
+                        </View>
+
+
+
+                        {/*<View style={styles.imagePlaceContainer}>*/}
+                        {/*    {<TouchableOpacity*/}
+                        {/*        style={styles.buttonUpload}*/}
+                        {/*        onPress={this.printArchive}*/}
+                        {/*    >*/}
+                        {/*        <Text style={styles.textButton}>Print Archive</Text>*/}
+                        {/*    </TouchableOpacity>}*/}
+                        {/*</View>*/}
+                        {/*<View style={styles.imagePlaceContainer}>*/}
+
+                        {/*    {<TouchableOpacity*/}
+                        {/*        style={styles.buttonUpload}*/}
+                        {/*        onPress={this.resetValue}*/}
+                        {/*    >*/}
+                        {/*        <Text style={styles.textButton}>Remove value</Text>*/}
+                        {/*    </TouchableOpacity>}*/}
+                        {/*</View>*/}
                     </View>
-                </View>
-                <View style={styles.imagePlaceContainer}>
-                    {this.state.imageURI &&
-                    <TouchableOpacity
-                        style={styles.buttonUpload}
-                        onPress={this.sendRequest}
-                    >
-                        <Text style={styles.textButton}>Process photo</Text>
-                    </TouchableOpacity>}
-                </View>
-
-                <View style={styles.imagePlaceContainer}>
-
-                    <TouchableOpacity
-                        style={styles.buttonUpload}
-                        onPress={this.uploadImage}
-                    >
-                        <Text style={styles.textButton}>Select photo</Text>
-                    </TouchableOpacity>
-                </View>
-
-                <View style={styles.imagePlaceContainer}>
-
-                    {<TouchableOpacity
-                        style={styles.buttonUpload}
-                        onPress={this.printArchive}
-                    >
-                        <Text style={styles.textButton}>Print Archive</Text>
-                    </TouchableOpacity>}
-                </View>
-                <View style={styles.imagePlaceContainer}>
-
-                    {<TouchableOpacity
-                        style={styles.buttonUpload}
-                        onPress={this.resetValue}
-                    >
-                        <Text style={styles.textButton}>Remove value</Text>
-                    </TouchableOpacity>}
-                </View>
-            </SafeAreaView>
+                </ScrollView>
+            </View>
         );
     }
 
 }
 
+
+const MyBarChart2 = () => {
+    const labels = [
+        "fats",
+        "carbs",
+        "appetizer",
+        "mains",
+        "junk",
+        "protein",
+        "meat",
+        "dessert",
+        "healthy",
+        "soups",
+    ];
+    const data = [
+        Math.random() * 100,
+        Math.random() * 100,
+        Math.random() * 100,
+        Math.random() * 100,
+        Math.random() * 100,
+        Math.random() * 100,
+        Math.random() * 100,
+        Math.random() * 100,
+        Math.random() * 100,
+        Math.random() * 100,
+    ];
+    let maxValueID = data.indexOf(Math.max(...data));
+
+    return (
+        <View style={styles.archiveBarChart}>
+            <Text style={styles.barChartHeader}>{labels[maxValueID]}</Text>
+            <LineChart
+                data={{
+                    labels: labels,
+                    datasets: [
+                        {
+                            data: data
+                        }
+                    ]
+                }}
+                fromZero={true}
+                width={Dimensions.get("window").width} // from react-native
+                verticalLabelRotation={42}
+                height={320}
+                yAxisSuffix="%"
+                yAxisInterval={10}
+                chartConfig={{
+                    backgroundColor: "#6C63FF",
+                    backgroundGradientFrom: "#6C63FF",
+                    backgroundGradientTo: "#6f67e0",
+                    decimalPlaces: 2, // optional, defaults to 2dp
+                    color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+                    labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+
+                    propsForDots: {
+                        r: "6",
+                        strokeWidth: "2",
+                        stroke: "#6C63FF"
+                    }
+                }}
+                bezier
+                style={{
+                    marginVertical: 8,
+                }}
+            />
+        </View>
+    );
+};
+
+export const NativeStack = createNativeStackNavigator();
+
+function MyBarChartList() {
+    const scrollRef = useRef(null);
+
+    const statusBarInset = useSafeAreaInsets().top;
+    const smallHeaderInset = statusBarInset + 44;
+    const largeHeaderInset = statusBarInset + 90;
+    scrollRef.current?.scrollTo({
+        y: -largeHeaderInset,
+    })
+
+    return (
+        <ScrollView
+            ref={scrollRef}
+            contentInsetAdjustmentBehavior="automatic"
+            scrollToOverflowEnabled
+        >
+            <MyBarChart2/>
+            <MyBarChart2/>
+            <MyBarChart2/>
+            <MyBarChart2/>
+            <MyBarChart2/>
+        </ScrollView>
+        );
+
+}
 class History extends React.Component {
     constructor(props) {
         super(props);
@@ -322,12 +522,17 @@ class History extends React.Component {
 
     render() {
         return (
-            <SafeAreaView
-                style={styles.safeAreaContainer}
-            >
-                <Image source={uploadImage} style={{width: 50, height: 50}}/>
-                <Text>There will be a list</Text>
-            </SafeAreaView>
+                    <NativeStack.Navigator
+                        screenOptions={{
+                            headerTranslucent: true,
+                            headerLargeTitle: true,
+                            headerStyle: {backgroundColor: 'rgba(255,255,255, 1)'},
+                        }}>
+                        <NativeStack.Screen
+                            name="Your archive"
+                            component={MyBarChartList}
+                        />
+                    </NativeStack.Navigator>
         );
     }
 }
@@ -342,13 +547,11 @@ export class FullView extends React.Component {
             <SafeAreaProvider>
                 <NavigationContainer>
                     <StatusBar barStyle="light-content" backgroundColor="#6a51ae"/>
-                    <Stack.Navigator initialRouteName="Home">
-                        <Stack.Screen name="Calorie Counter">
-                            {() => (
+
                                 <Tab.Navigator
                                     initialRouteName="Home"
                                     tabBarOptions={{
-                                        activeTintColor: '#6C63FF'
+                                        activeTintColor: '#6c63ff'
                                     }}
                                 >
                                     <Tab.Screen
@@ -373,10 +576,7 @@ export class FullView extends React.Component {
                                         }}
                                     />
                                 </Tab.Navigator>
-                            )}
-                        </Stack.Screen>
 
-                    </Stack.Navigator>
                 </NavigationContainer>
             </SafeAreaProvider>
         );
@@ -390,43 +590,53 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'flex-start',
+        backgroundColor: 'white',
+    },
+    scrollContainer: {
+        width: '100%',
+        display: 'flex',
+        flex: 1,
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
         backgroundColor: 'white'
-
     },
     imagePlaceContainer: {
         display: 'flex',
         flexDirection: 'row',
     },
     imagePlace: {
-        backgroundColor: '#fdfdfd',
-        flex: 0.9,
+        backgroundColor: '#f3f3f3',
+        flex: 1,
         aspectRatio: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        borderRadius: 20,
+        borderColor: '#cbcbcb',
+        borderBottomWidth: 1,
+        // borderRadius: 20,
 
-        shadowColor: '#000000',
-        shadowOffset: {width: 0, height: 1},
-        shadowOpacity: 0.4,
-        shadowRadius: 3,
-        elevation: 3,
-
+        // shadowColor: '#000000',
+        // shadowOffset: {width: 0, height: 1},
+        // shadowOpacity: 0.4,
+        // shadowRadius: 3,
+        // elevation: 3,
+        // marginTop: 20,
         marginBottom: 40
     },
     imagePlaceholder: {
-        width: '80%',
+        height: 200,
     },
     imageUploaded: {
         width: "100%",
         height: "100%",
-        borderRadius: 20,
+        // borderRadius: 20,
     },
     top: {
         flex: 0.3,
         backgroundColor: "grey",
         borderWidth: 5,
-        borderTopLeftRadius: 20,
-        borderTopRightRadius: 20,
+        // borderTopLeftRadius: 20,
+        // borderTopRightRadius: 20,
     },
     middle: {
         flex: 0.3,
@@ -451,5 +661,19 @@ const styles = StyleSheet.create({
         fontSize: 16,
         textTransform: 'uppercase',
         color: '#FFFFFF'
+    },
+    placeholderText: {
+        paddingTop: 50,
+        fontSize: 24
+    },
+    barChartHeader: {
+        textAlign: "center",
+        fontWeight: "400",
+        fontSize: 24,
+        textTransform: 'capitalize'
+    },
+    archiveBarChart: {
+        paddingTop: 15,
+        paddingBottom: 15,
     }
 });
