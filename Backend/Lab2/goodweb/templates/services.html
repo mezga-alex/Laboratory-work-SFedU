@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% include './components/head.html' %}
+
+<body>
+    {% import './components/components-macro.html' as macroComponents %}
+    {% include './components/header.html' %}
+
+   	<div class="banner-area banner-bg-1">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="banner">
+						<h2>Our Services</h2>
+						<ul class="page-title-link">
+							<li><a href="#">Home</a></li>
+							<li><a href="#">Our Services</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+    {{ macroComponents.serviceParts(service_parts) }}
+    {{ macroComponents.serviceExamples(services_widget) }}
+    {% include './components/testimonials.html' %}
+
+    <a href="#" id="scroll-to-top" class="dmtop global-radius"><i class="fa fa-angle-up"></i></a>
+
+    <!-- ALL JS FILES -->
+    <script src="../static/js/all.js"></script>
+    <!-- ALL PLUGINS -->
+    <script src="../static/js/custom.js"></script>
+    <script src="../static/js/portfolio.js"></script>
+    <script src="../static/js/hoverdir.js"></script>
+
+</body>
+</html>
