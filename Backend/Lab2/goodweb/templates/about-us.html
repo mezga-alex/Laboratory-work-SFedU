@@ -1,22 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
-    {% include './components/head.html' %}
+{% include './components/head.html' %}
 <body>
-    {% import './components/components-macro.html' as macroComponents %}
-    {% include './components/header.html' %}
-    {{ macroComponents.banner({'title': 'About Us', 'sub_1': 'Home', 'sub_2': 'About Us'}) }}
-    {% include './components/about.html' %}
-    {% include './components/testimonials.html' %}
-    {% include './components/footer.html' %}
+{% import './components/components-macro.html' as macroComponents %}
+{% include './components/header.html' %}
+{{ macroComponents.banner({'title': 'About Us', 'sub_1': 'Home', 'sub_2': 'About Us'}) }}
+{% include './components/about.html' %}
+{% include './components/testimonials.html' %}
+{% include './components/footer.html' %}
 
-    <a href="#" id="scroll-to-top" class="dmtop global-radius"><i class="fa fa-angle-up"></i></a>
+<a href="#" id="scroll-to-top" class="dmtop global-radius"><i class="fa fa-angle-up"></i></a>
 
-    <!-- ALL JS FILES -->
-    <script src="../static/js/all.js"></script>
-    <!-- ALL PLUGINS -->
-    <script src="../static/js/custom.js"></script>
-    <script src="../static/js/portfolio.js"></script>
-    <script src="../static/js/hoverdir.js"></script>
+<!-- ALL JS FILES -->
+<script src="../static/js/all.js"></script>
+<!-- ALL PLUGINS -->
+<script src="../static/js/custom.js"></script>
+<script src="../static/js/portfolio.js"></script>
+<script src="../static/js/hoverdir.js"></script>
 
 </body>
 </html>

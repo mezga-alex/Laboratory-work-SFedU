@@ -20,18 +20,14 @@ async def home(request: Request):
 
 @app.get("/{page_name}", response_class=HTMLResponse)
 async def page(request: Request, page_name: str):
-    data = {
-        "page": page_name,
-        "service_parts": ["TEST-1", "TEST-2", "TEST-3"]
-    }
+
     return templates.TemplateResponse(f"{page_name}",
                                       {
                                           "request": request,
-                                          "id": 1000000,
                                           "service_parts": components.SERVICES_CARDS,
                                           "services_widget": components.SERVICES_WIDGET}
                                       )
 
 
 if __name__ == "__main__":
-    uvicorn.run("run:app", host="127.0.0.1", port=8000, log_level="info")
+    uvicorn.run("run:app", host="127.0.0.1", port=8050, log_level="info")
