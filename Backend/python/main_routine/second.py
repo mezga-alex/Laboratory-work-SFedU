@@ -1,3 +1,0 @@
-#second.py
-
-import first

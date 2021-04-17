@@ -1,3 +1,0 @@
-export DATABASE_URL=postgresql+psycopg2://you@localhost/messagr
-# -- or --
-#export DATABASE_URL=sqlite:///../tmp/messager.db

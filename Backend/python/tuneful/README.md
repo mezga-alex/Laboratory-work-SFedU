@@ -1,1 +1,0 @@
-A basic API for storing and retrieving songs for the application.

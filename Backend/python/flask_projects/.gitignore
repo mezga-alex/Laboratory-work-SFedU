@@ -1,7 +1,0 @@
-*.pyc
-.DS_Store
-secrets
-tmp
-.anvil
-venv
-.env

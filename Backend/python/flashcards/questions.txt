@@ -1,9 +1,0 @@
-assert
-assertEqual(a, b)
-assertNotEqual(a, b)
-assertIn(a, b)
-assertNotIn(a, b)
-assertFalse(a)
-assertTrue(a)
-assertIsInstance(a, TYPE)
-assertRaises(ERROR, a, args)
